@@ -25,9 +25,10 @@ jobs:  # Задачи, которые выполняет workflow
     - name: Build web  # Шаг для сборки веб-версии приложения
       run: flutter build web  # Команда для сборки веб-приложения
 
-    - name: Deploy to Firebase  # Шаг для развёртывания на Firebase
-      uses: w9jds/firebase-action@master  # Использование действия для деплоя на Firebase
+    - name: Authenticate to Google Cloud
+      uses: google-github-actions/auth@v0.4.0
       with:
-        args: deploy --only hosting  # Аргументы командной строки для действия Firebase CLI
-      env:
-        FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN_MIRO }}  # Использование секретного токена Firebase для аутентификации
+        credentials_json: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_JSON }}
+
+    - name: Deploy to Firebase # Шаг для развёртывания на Firebase
+      run: firebase deploy --only hosting --project miro-5e729

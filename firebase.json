@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "site": "miro-5e729.web.app",
+    "site": "miro-5e729",
     "public": "build/web",
     "ignore": [
       "firebase.json",

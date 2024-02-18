@@ -1,0 +1,33 @@
+name: Deploy to Firebase Hosting  # Имя workflow, отображается в разделе Actions GitHub
+
+on:  # События, которые запускают workflow
+  push:
+    branches:
+      - main  # Workflow запускается при пуше в ветку main
+  pull_request:
+    types: [closed]  # и при закрытии любого pull request
+
+jobs:  # Задачи, которые выполняет workflow
+  deploy:  # Имя задачи
+    runs-on: ubuntu-latest  # Операционная система, на которой будет выполняться задача
+    if: github.event.pull_request.merged == true  # Условие: задача выполняется только если pull request был смержен
+    steps:  # Шаги выполнения задачи
+    - uses: actions/checkout@v2  # Шаг для проверки кода из репозитория
+
+    - name: Setup Flutter  # Название шага
+      uses: subosito/flutter-action@v1  # Использование действия для установки Flutter
+      with:
+        flutter-version: '2.x'  # Указывается версия Flutter
+
+    - name: Install dependencies  # Шаг для установки зависимостей
+      run: flutter pub get  # Команда для установки зависимостей
+
+    - name: Build web  # Шаг для сборки веб-версии приложения
+      run: flutter build web  # Команда для сборки веб-приложения
+
+    - name: Deploy to Firebase  # Шаг для развёртывания на Firebase
+      uses: w9jds/firebase-action@master  # Использование действия для деплоя на Firebase
+      with:
+        args: deploy --only hosting  # Аргументы командной строки для действия Firebase CLI
+      env:
+        FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN_MIRO }}  # Использование секретного токена Firebase для аутентификации

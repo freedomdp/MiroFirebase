@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import "style/text_styles.dart"; // Импортируем файл с определениями стилей текста
-import "style/colors.dart"; // Импортируем файл с определениями цветов
+import 'style/text_styles.dart';
+import 'style/colors.dart';
+import 'widgets/content_box.dart'; // Импортируем новый компонент
 
 void main() {
   runApp(const MyApp());
@@ -34,37 +35,23 @@ class HomePage extends StatelessWidget {
           width: 900,
           padding: EdgeInsets.zero,
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Text('Smart Ship Cars', style: H1.h1Style),
-              SizedBox(height: 30), // Расстояние между заголовком и контейнерами
+              SizedBox(height: 30),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Expanded(
-                    flex: 8, // 80% ширины
-                    child: Container(
-                      padding: const EdgeInsets.all(20),
-                      margin: const EdgeInsets.only(right: 30), // Отступ справа
-                      decoration: BoxDecoration(
-                        color: AppColors.contentBackground,
-                        border: Border.all(color: AppColors.border),
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      child: Text('Учет заказов', style: H2.h2Style),
-                    ),
+                  ContentBox(
+                    title: 'Учет заказов',
+                    child: Text('Здесь будет таблица заказов'), // Заглушка для таблицы
+                    flex: 7,
+                    margin: const EdgeInsets.only(right: 30),
                   ),
-                  Expanded(
-                    flex: 2, // 20% ширины
-                    child: Container(
-                      padding: const EdgeInsets.all(20),
-                      decoration: BoxDecoration(
-                        color: AppColors.contentBackground,
-                        border: Border.all(color: AppColors.border),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Text('Сотрудники', style: H2.h2Style),
-                    ),
+                  ContentBox(
+                    title: 'Сотрудники',
+                    child: Text('Здесь будет таблица сотрудников'), // Заглушка для таблицы
+                    flex: 3,
                   ),
                 ],
               ),

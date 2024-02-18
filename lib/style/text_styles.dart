@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class H1 {
   static const h1Style = TextStyle(
-    fontSize: 24,
+    fontSize: 30,
     fontWeight: FontWeight.w800,
   );
 }

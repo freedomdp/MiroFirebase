@@ -49,7 +49,7 @@ class HomePage extends StatelessWidget {
                       decoration: BoxDecoration(
                         color: AppColors.contentBackground,
                         border: Border.all(color: AppColors.border),
-                        borderRadius: BorderRadius.circular(20),
+                        borderRadius: BorderRadius.circular(5),
                       ),
                       child: Text('Учет заказов', style: H2.h2Style),
                     ),

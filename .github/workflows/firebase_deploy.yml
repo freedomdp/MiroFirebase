@@ -22,6 +22,14 @@ jobs:  # Задачи, которые выполняет workflow
     - name: Install dependencies  # Шаг для установки зависимостей
       run: flutter pub get  # Команда для установки зависимостей
 
+    - name: Setup Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14' # Вы можете выбрать нужную версию Node.js
+
+    - name: Install Firebase CLI
+      run: npm install -g firebase-tools
+
     - name: Build web  # Шаг для сборки веб-версии приложения
       run: flutter build web  # Команда для сборки веб-приложения
 
@@ -30,5 +38,5 @@ jobs:  # Задачи, которые выполняет workflow
       with:
         credentials_json: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_JSON }}
 
-    - name: Deploy to Firebase # Шаг для развёртывания на Firebase
+    - name: Deploy to Firebase
       run: firebase deploy --only hosting --project miro-5e729

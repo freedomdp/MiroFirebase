@@ -10,14 +10,14 @@ on:  # События, которые запускают workflow
 jobs:  # Задачи, которые выполняет workflow
   deploy:  # Имя задачи
     runs-on: ubuntu-latest  # Операционная система, на которой будет выполняться задача
-    if: github.event.pull_request.merged == true  # Условие: задача выполняется только если pull request был смержен
+    #if: github.event.pull_request.merged == true  # Условие: задача выполняется только если pull request был смержен
     steps:  # Шаги выполнения задачи
     - uses: actions/checkout@v2  # Шаг для проверки кода из репозитория
 
     - name: Setup Flutter  # Название шага
       uses: subosito/flutter-action@v1  # Использование действия для установки Flutter
       with:
-        flutter-version: '2.x'  # Указывается версия Flutter
+        flutter-version: '3.16.5' # Указываем точную версию Flutter
 
     - name: Install dependencies  # Шаг для установки зависимостей
       run: flutter pub get  # Команда для установки зависимостей

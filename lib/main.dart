@@ -53,7 +53,7 @@ class HomePage extends StatelessWidget {
             padding: EdgeInsets.zero,
             child: Column(
               children: [
-                Text('Smart Ship Cars', style: H1.h1Style),
+                Text('Smart Ship Cars', style: TextStyles.h1Style),
                 SizedBox(height: 30),
                 ContentBox(
                   title: 'Учет заказов',

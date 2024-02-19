@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:miro/style/colors.dart';
 import 'package:miro/bloc/directory_bloc.dart';
 import 'package:miro/bloc/directory_event.dart';
+import 'package:miro/widgets/universal_modal.dart';
+import 'package:miro/style/text_styles.dart';
 
 
 class DirectoryTable extends StatelessWidget {
@@ -34,7 +36,29 @@ class DirectoryTable extends StatelessWidget {
                   IconButton(
                     icon: Icon(Icons.edit, color: Colors.blue),
                     onPressed: () {
-                      // Реализуйте функционал редактирования
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return UniversalModal(
+                            title: 'Редактирование имени сотрудника',
+                            employeeName: data['Employee'], // Передаем имя сотрудника
+                            content: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                TextFormField(
+                                  initialValue: data['Employee'],
+                                  decoration: InputDecoration(
+                                    labelText: 'Новое имя сотрудника',
+                                  ),
+                                  onSaved: (newValue) {
+                                    // Здесь можно добавить логику сохранения нового имени через BLoC
+                                  },
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      );
                     },
                   ),
                   IconButton(

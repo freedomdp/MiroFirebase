@@ -1,5 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:miro/style/colors.dart';
+import 'package:miro/bloc/directory_bloc.dart';
+import 'package:miro/bloc/directory_event.dart';
+
 
 class DirectoryTable extends StatelessWidget {
   @override
@@ -35,7 +40,10 @@ class DirectoryTable extends StatelessWidget {
                   IconButton(
                     icon: Icon(Icons.delete, color: Colors.red),
                     onPressed: () {
-                      // Реализуйте функционал удаления
+                      // Получаем доступ к BLoC
+                      final bloc = BlocProvider.of<DirectoryBloc>(context);
+                      // Отправляем событие удаления, передавая ID документа
+                      bloc.add(DeleteDirectory(document.id)); // Убедитесь, что у вас есть доступ к document.id
                     },
                   ),
                 ],

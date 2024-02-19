@@ -10,7 +10,7 @@ class DeleteDirectory extends DirectoryEvent {
 
 class EditDirectory extends DirectoryEvent {
   final String documentId;
-  // Здесь можно добавить другие поля, необходимые для редактирования
+  final String newName; // Добавляем новое поле для имени
 
-  EditDirectory(this.documentId);
+  EditDirectory(this.documentId, this.newName);
 }

@@ -38,58 +38,26 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    final isMobile = screenWidth < 900;
+    final bool isMobile = screenWidth < 1200;
 
     return Scaffold(
-      body: SingleChildScrollView( // Добавляем SingleChildScrollView
+      body: SingleChildScrollView( // Обеспечивает прокрутку содержимого
         child: Center(
           child: Container(
-            width: isMobile ? screenWidth : 1200,
+            width: isMobile ? screenWidth : 1200, // Увеличиваем ширину для десктопа
             padding: EdgeInsets.zero,
-            child: isMobile
-                ? Column(
+            child: Column( // Используем Column для вертикального расположения таблиц
               children: [
                 Text('Smart Ship Cars', style: H1.h1Style),
                 SizedBox(height: 30),
                 ContentBox(
                   title: 'Учет заказов',
                   child: AccountingTable(),
-                  margin: const EdgeInsets.only(bottom: 30),
                 ),
                 SizedBox(height: 30),
                 ContentBox(
                   title: 'Сотрудники',
                   child: DirectoryTable(),
-                  margin: const EdgeInsets.only(bottom: 30),
-                ),
-              ],
-            )
-                : Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Text('Smart Ship Cars', style: H1.h1Style),
-                SizedBox(height: 30),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      flex: 7,
-                      child: ContentBox(
-                        title: 'Учет заказов',
-                        child: AccountingTable(),
-                        margin: const EdgeInsets.only(bottom: 30),
-                      ),
-                    ),
-                    SizedBox(width: 30),
-                    Expanded(
-                      flex: 3,
-                      child: ContentBox(
-                        title: 'Сотрудники',
-                        child: DirectoryTable(),
-                        margin: const EdgeInsets.only(bottom: 30),
-                      ),
-                    ),
-                  ],
                 ),
               ],
             ),
@@ -99,3 +67,4 @@ class HomePage extends StatelessWidget {
     );
   }
 }
+

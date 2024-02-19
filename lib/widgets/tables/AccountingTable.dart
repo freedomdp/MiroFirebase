@@ -13,9 +13,6 @@ class _AccountingTableState extends State<AccountingTable> {
 
   @override
   Widget build(BuildContext context) {
-    // Получаем доступ к цветам темы
-    final colorScheme = Theme.of(context).colorScheme;
-
     return StreamBuilder<QuerySnapshot>(
       stream: FirebaseFirestore.instance.collection('accounting').snapshots(),
       builder: (context, snapshot) {
@@ -31,27 +28,27 @@ class _AccountingTableState extends State<AccountingTable> {
             String formattedDate = DateFormat('dd.MM.yyyy').format(date);
 
             return DataRow(cells: [
-              DataCell(Wrap(children: [Text(data['Order'] ?? '')])),
-              DataCell(Wrap(children: [Text(formattedDate)])),
-              DataCell(Wrap(children: [Text(data['Employee'] ?? '')])),
-              DataCell(Wrap(children: [Text(data['Model'] ?? '')])),
-              DataCell(Wrap(children: [Text(data['Company'] ?? '')])),
-              DataCell(Wrap(children: [Text('${data['Price'] ?? ''}')])),
-              DataCell(Wrap(children: [Text('${data['Cash'] ?? ''}')])),
-              DataCell(Wrap(children: [Text('${data['Pay Day'] ?? ''}')])),
+              DataCell(Text(data['Order'] ?? '')),
+              DataCell(Text(formattedDate)),
+              DataCell(Text(data['Employee'] ?? '')),
+              DataCell(Text(data['Model'] ?? '')),
+              DataCell(Text(data['Company'] ?? '')),
+              DataCell(Text('${data['Price'] ?? ''}')),
+              DataCell(Text('${data['Cash'] ?? ''}')),
+              DataCell(Text('${data['Pay Day'] ?? ''}')),
               DataCell(Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   IconButton(
-                    icon: Icon(Icons.edit),
+                    icon: Icon(Icons.edit, color: Colors.blue),
                     onPressed: () {
-                      // Реализуйте логику редактирования
+                      // Здесь будет код для редактирования записи
                     },
                   ),
                   IconButton(
-                    icon: Icon(Icons.delete),
+                    icon: Icon(Icons.delete, color: Colors.red),
                     onPressed: () {
-                      // Реализуйте логику удаления
+                      // Здесь будет код для удаления записи
                     },
                   ),
                 ],
@@ -67,7 +64,6 @@ class _AccountingTableState extends State<AccountingTable> {
           child: DataTable(
             sortColumnIndex: _sortColumnIndex,
             sortAscending: _sortAscending,
-            headingRowColor: MaterialStateProperty.all(colorScheme.primary.withOpacity(0.2)), // Выделение заголовка цветом
             columns: [
               DataColumn(label: Text('Order')),
               DataColumn(label: Text('Date')),
@@ -77,7 +73,7 @@ class _AccountingTableState extends State<AccountingTable> {
               DataColumn(label: Text('Price')),
               DataColumn(label: Text('Cash')),
               DataColumn(label: Text('Pay Day')),
-              DataColumn(label: Text('Actions')),
+              DataColumn(label: Text('Actions')), // Добавлена колонка Actions
             ],
             rows: rows,
           ),

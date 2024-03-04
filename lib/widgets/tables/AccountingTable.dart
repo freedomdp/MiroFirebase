@@ -17,7 +17,8 @@ class _AccountingTableState extends State<AccountingTable> {
       stream: FirebaseFirestore.instance.collection('accounting').snapshots(),
       builder: (context, snapshot) {
         if (snapshot.hasError) return Text('Ошибка: ${snapshot.error}');
-        if (!snapshot.hasData) return Center(child: CircularProgressIndicator());
+        if (!snapshot.hasData)
+          return const Center(child: CircularProgressIndicator());
 
         List<DataRow> rows = [];
 
@@ -40,13 +41,13 @@ class _AccountingTableState extends State<AccountingTable> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   IconButton(
-                    icon: Icon(Icons.edit, color: Colors.blue),
+                    icon: const Icon(Icons.edit, color: Colors.blue),
                     onPressed: () {
                       // Здесь будет код для редактирования записи
                     },
                   ),
                   IconButton(
-                    icon: Icon(Icons.delete, color: Colors.red),
+                    icon: const Icon(Icons.delete, color: Colors.red),
                     onPressed: () {
                       // Здесь будет код для удаления записи
                     },
@@ -64,7 +65,7 @@ class _AccountingTableState extends State<AccountingTable> {
           child: DataTable(
             sortColumnIndex: _sortColumnIndex,
             sortAscending: _sortAscending,
-            columns: [
+            columns: const [
               DataColumn(label: Text('Order')),
               DataColumn(label: Text('Date')),
               DataColumn(label: Text('Employee')),

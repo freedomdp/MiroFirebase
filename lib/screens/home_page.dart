@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:miro/style/text_styles.dart';
-import 'package:miro/style/colors.dart';
 import 'package:miro/widgets/content_box.dart';
 import 'package:miro/widgets/tables/DirectoryTable.dart';
 import 'package:miro/widgets/tables/AccountingTable.dart';
@@ -21,13 +20,13 @@ class HomePage extends StatelessWidget {
             padding: EdgeInsets.zero,
             child: Column(
               children: [
-                Text('Smart Ship Cars', style: TextStyles.h1Style),
-                SizedBox(height: 30),
+                const Text('Smart Ship Cars', style: TextStyles.h1Style),
+                const SizedBox(height: 30),
                 ContentBox(
                   title: 'Учет заказов',
                   child: AccountingTable(), // Убран const
                 ),
-                SizedBox(height: 30),
+                const SizedBox(height: 30),
                 ContentBox(
                   title: 'Сотрудники',
                   child: DirectoryTable(), // Убран const

@@ -5,7 +5,6 @@ import 'package:miro/bloc/directory_bloc.dart';
 import 'package:miro/bloc/directory_event.dart';
 import 'package:miro/widgets/universal_modal.dart';
 import 'package:miro/style/text_styles.dart';
-import 'package:miro/style/colors.dart';
 
 class DirectoryTable extends StatelessWidget {
   @override
@@ -30,7 +29,7 @@ class DirectoryTable extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 IconButton(
-                  icon: Icon(Icons.edit, color: Colors.blue),
+                  icon: const Icon(Icons.edit, color: Colors.blue),
                   onPressed: () {
                     // Открытие модального окна для редактирования
                     showDialog(
@@ -47,7 +46,7 @@ class DirectoryTable extends StatelessWidget {
                           },
                           content: TextFormField(
                             initialValue: data['Employee'],
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               labelText: 'Новое имя сотрудника',
                             ),
                             // Вы можете добавить здесь обработчик сохранения, если это необходимо

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:miro/bloc/directory_bloc.dart';
+import 'package:miro/bloc/directory_event.dart';
 import 'package:miro/style/colors.dart';
 import 'package:miro/style/text_styles.dart';
 import 'package:miro/widgets/IconTextButton.dart';
@@ -10,7 +11,7 @@ class UniversalModal extends StatelessWidget {
   final String title;
   final String employeeName;
   final String documentId;
-  final Function(String newName) onSave;
+  Function(String newName) onSave;
 
   UniversalModal({
     Key? key,
@@ -29,18 +30,19 @@ class UniversalModal extends StatelessWidget {
       backgroundColor: AppColors.background,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
       child: Container(
-        padding: EdgeInsets.all(20),
-        constraints: BoxConstraints(minWidth: 300, maxWidth: 600),
+        padding: const EdgeInsets.all(20),
+        constraints: const BoxConstraints(minWidth: 300, maxWidth: 600),
         child: Form(
           key: _formKey,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(title, style: TextStyles.h1Style),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               TextFormField(
                 initialValue: employeeName,
-                decoration: InputDecoration(labelText: 'Новое имя сотрудника'),
+                decoration:
+                    const InputDecoration(labelText: 'Новое имя сотрудника'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Пожалуйста, введите имя';
@@ -49,7 +51,7 @@ class UniversalModal extends StatelessWidget {
                 },
                 onSaved: (newValue) => onSave(newValue!),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
@@ -57,20 +59,28 @@ class UniversalModal extends StatelessWidget {
                     icon: Icons.cancel,
                     text: 'Отмена',
                     onPressed: () => Navigator.of(context).pop(),
-                    textStyle: TextStyles.textStyle.copyWith(color: AppColors.text),
+                    textStyle:
+                        TextStyles.textStyle.copyWith(color: AppColors.text),
                     backgroundColor: AppColors.contentBackground,
                   ),
-                  SizedBox(width: 10),
+                  const SizedBox(width: 10),
                   IconTextButton(
                     icon: Icons.save,
                     text: 'Сохранить',
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
                         _formKey.currentState!.save(); // Сохраняем форму
-                        Navigator.of(context).pop(); // Закрываем модальное окно после сохранения
+                        // Поскольку onSave ожидает строку, обновим его, чтобы отправлять событие в BLoC
+                        onSave = (String newName) {
+                          BlocProvider.of<DirectoryBloc>(context)
+                              .add(EditDirectory(documentId, newName));
+                        };
+                        Navigator.of(context)
+                            .pop(); // Закрываем модальное окно после сохранения
                       }
                     },
-                    textStyle: TextStyles.textStyle.copyWith(color: AppColors.background),
+                    textStyle: TextStyles.textStyle
+                        .copyWith(color: AppColors.background),
                     backgroundColor: AppColors.primary,
                   ),
                 ],

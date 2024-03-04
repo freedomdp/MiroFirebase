@@ -27,7 +27,7 @@ class HomePage extends StatelessWidget {
                   child: AccountingTable(), // Убран const
                 ),
                 const SizedBox(height: 30),
-                ContentBox(
+                const ContentBox(
                   title: 'Сотрудники',
                   child: DirectoryTable(), // Убран const
                 ),

@@ -7,6 +7,8 @@ import 'package:miro/widgets/universal_modal.dart';
 import 'package:miro/style/text_styles.dart';
 
 class DirectoryTable extends StatelessWidget {
+  const DirectoryTable({super.key});
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
@@ -17,39 +19,47 @@ class DirectoryTable extends StatelessWidget {
         }
 
         if (!snapshot.hasData) {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         }
 
-        List<DataRow> rows = snapshot.data!.docs.map((DocumentSnapshot document) {
+        final directoryBloc = BlocProvider.of<DirectoryBloc>(context);
+
+        List<DataRow> rows =
+            snapshot.data!.docs.map((DocumentSnapshot document) {
           Map<String, dynamic> data = document.data() as Map<String, dynamic>;
 
           return DataRow(cells: [
-            DataCell(Text(data['Employee'] ?? 'Нет данных', style: TextStyles.textStyle)),
+            DataCell(Text(data['Employee'] ?? 'Нет данных',
+                style: TextStyles.textStyle)),
             DataCell(Row(
               mainAxisSize: MainAxisSize.min,
               children: [
                 IconButton(
                   icon: const Icon(Icons.edit, color: Colors.blue),
                   onPressed: () {
-                    // Открытие модального окна для редактирования
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {
-                        // Возвращаем UniversalModal с передачей параметров
-                        return UniversalModal(
-                          title: 'Редактирование имени сотрудника',
-                          employeeName: data['Employee'], // Текущее имя сотрудника
-                          documentId: document.id, // ID документа для обновления
-                          onSave: (String newName) {
-                            // Обновление записи через DirectoryBloc
-                            BlocProvider.of<DirectoryBloc>(context).add(EditDirectory(document.id, newName));
-                          },
-                          content: TextFormField(
-                            initialValue: data['Employee'],
-                            decoration: const InputDecoration(
-                              labelText: 'Новое имя сотрудника',
+                        // Использование BlocProvider.value для передачи DirectoryBloc в UniversalModal
+                        return BlocProvider.value(
+                          value: directoryBloc,
+                          child: UniversalModal(
+                            title: 'Редактирование имени сотрудника',
+                            employeeName:
+                                data['Employee'], // Текущее имя сотрудника
+                            documentId:
+                                document.id, // ID документа для обновления
+                            onSave: (String newName) {
+                              // Обновление записи через DirectoryBloc
+                              directoryBloc
+                                  .add(EditDirectory(document.id, newName));
+                            },
+                            content: TextFormField(
+                              initialValue: data['Employee'],
+                              decoration: const InputDecoration(
+                                labelText: 'Новое имя сотрудника',
+                              ),
                             ),
-                            // Вы можете добавить здесь обработчик сохранения, если это необходимо
                           ),
                         );
                       },
@@ -57,10 +67,10 @@ class DirectoryTable extends StatelessWidget {
                   },
                 ),
                 IconButton(
-                  icon: Icon(Icons.delete, color: Colors.red),
+                  icon: const Icon(Icons.delete, color: Colors.red),
                   onPressed: () {
                     // Удаление записи через DirectoryBloc
-                    BlocProvider.of<DirectoryBloc>(context).add(DeleteDirectory(document.id));
+                    directoryBloc.add(DeleteDirectory(document.id));
                   },
                 ),
               ],
@@ -72,7 +82,8 @@ class DirectoryTable extends StatelessWidget {
           scrollDirection: Axis.horizontal,
           child: DataTable(
             columns: const [
-              DataColumn(label: Text('Employee', style: TextStyles.tebleHeader)),
+              DataColumn(
+                  label: Text('Employee', style: TextStyles.tebleHeader)),
               DataColumn(label: Text('Actions', style: TextStyles.tebleHeader)),
             ],
             rows: rows,

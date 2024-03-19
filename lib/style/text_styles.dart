@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'colors.dart';
 
-
 class TextStyles {
   static const TextStyle textStyle = TextStyle(
     fontSize: 16.0,
@@ -16,7 +15,7 @@ class TextStyles {
   );
 
   static const TextStyle tebleText = TextStyle(
-    fontSize: 12.0,
+    fontSize: 18.0,
     fontWeight: FontWeight.normal,
     color: AppColors.text,
   );

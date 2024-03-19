@@ -30,11 +30,11 @@ class _HomePageState extends State<HomePage> {
                 onPressed: () {
                   // add a new note
                   if (docID == null) {
-                    firestoreService.addNote(textController.text);
+                    firestoreService.addEmployee(textController.text);
                   }
                   // update an existing note
                   else {
-                    firestoreService.updateNote(docID, textController.text);
+                    firestoreService.updateEmployee(docID, textController.text);
                   }
 
                   // clear the text controller
@@ -59,7 +59,7 @@ class _HomePageState extends State<HomePage> {
         child: const Icon(Icons.add),
       ),
       body: StreamBuilder<QuerySnapshot>(
-          stream: firestoreService.getNotesStream(),
+          stream: firestoreService.getEmployeesStream(),
           builder: (context, snapshot) {
             // if we have data, get all the docs
             if (snapshot.hasData) {
@@ -91,7 +91,8 @@ class _HomePageState extends State<HomePage> {
 
                         // delete button
                         IconButton(
-                          onPressed: () => firestoreService.deleteNote(docID),
+                          onPressed: () =>
+                              firestoreService.deleteEmployee(docID),
                           icon: const Icon(Icons.delete),
                         ),
                       ],

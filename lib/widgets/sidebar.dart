@@ -30,11 +30,11 @@ class _EmployeesSidebarState extends State<EmployeesSidebar> {
             // button to save
             ElevatedButton(
                 onPressed: () {
-                  // add a new note
+                  // add a new employee
                   if (docID == null) {
                     widget.firestoreService.addEmployee(textController.text);
                   }
-                  // update an existing note
+                  // update an existing employee
                   else {
                     widget.firestoreService
                         .updateEmployee(docID, textController.text);
@@ -62,6 +62,16 @@ class _EmployeesSidebarState extends State<EmployeesSidebar> {
             child: const Text(
               'Employees',
               style: TextStyles.h1Style,
+            ),
+          ),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Name', style: TextStyles.tebleHeader),
+                Text('Actions', style: TextStyles.tebleHeader),
+              ],
             ),
           ),
           Expanded(

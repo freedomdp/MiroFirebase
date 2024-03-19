@@ -9,7 +9,7 @@ class TextStyles {
   );
 
   static const TextStyle tebleHeader = TextStyle(
-    fontSize: 13.0,
+    fontSize: 20.0,
     fontWeight: FontWeight.bold,
     color: AppColors.text,
   );

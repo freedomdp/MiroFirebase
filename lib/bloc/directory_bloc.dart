@@ -5,32 +5,70 @@ import 'directory_state.dart';
 
 class DirectoryBloc extends Bloc<DirectoryEvent, DirectoryState> {
   DirectoryBloc() : super(DirectoryInitial()) {
-    on<LoadDirectories>((event, emit) => _loadDirectories(emit));
+    on<LoadDirectories>(_loadDirectories);
     on<DeleteDirectory>(_onDeleteDirectory);
     on<EditDirectory>(_onEditDirectory);
+    on<AddDirectory>(
+        _onAddDirectory); // Правильное добавление обработчика события AddDirectory
   }
 
-  Future<void> _loadDirectories(Emitter<DirectoryState> emit) async {
-    // Загрузка данных
-  }
-
-  Future<void> _onDeleteDirectory(DeleteDirectory event, Emitter<DirectoryState> emit) async {
+  Future<void> _loadDirectories(
+      LoadDirectories event, Emitter<DirectoryState> emit) async {
     emit(DirectoryLoading());
     try {
-      await FirebaseFirestore.instance.collection('directory').doc(event.documentId).delete();
-      emit(DirectoryLoaded()); // Обновляем состояние после удаления
+      final snapshot =
+          await FirebaseFirestore.instance.collection('directory').get();
+      final directories = snapshot.docs;
+      print('Загружено сотрудников: ${directories.length}');
+      directories.forEach((doc) => print(doc.data()));
+      emit(DirectoryLoaded(
+          directories)); // Передаем список документов в состояние
     } catch (e) {
       emit(DirectoryError(e.toString()));
     }
   }
 
-  Future<void> _onEditDirectory(EditDirectory event, Emitter<DirectoryState> emit) async {
+  Future<void> _onDeleteDirectory(
+      DeleteDirectory event, Emitter<DirectoryState> emit) async {
     emit(DirectoryLoading());
     try {
-      await FirebaseFirestore.instance.collection('directory').doc(event.documentId).update({
+      await FirebaseFirestore.instance
+          .collection('directory')
+          .doc(event.documentId)
+          .delete();
+      _loadDirectories(
+          LoadDirectories(), emit); // Повторно загружаем список сотрудников
+    } catch (e) {
+      emit(DirectoryError(e.toString()));
+    }
+  }
+
+  Future<void> _onEditDirectory(
+      EditDirectory event, Emitter<DirectoryState> emit) async {
+    emit(DirectoryLoading());
+    try {
+      await FirebaseFirestore.instance
+          .collection('directory')
+          .doc(event.documentId)
+          .update({
         'Employee': event.newName,
       });
-      emit(DirectoryLoaded()); // Обновляем состояние после редактирования
+      _loadDirectories(
+          LoadDirectories(), emit); // Повторно загружаем список сотрудников
+    } catch (e) {
+      emit(DirectoryError(e.toString()));
+    }
+  }
+
+  Future<void> _onAddDirectory(
+      AddDirectory event, Emitter<DirectoryState> emit) async {
+    emit(DirectoryLoading());
+    try {
+      await FirebaseFirestore.instance
+          .collection('directory')
+          .add({'Employee': event.newName});
+      _loadDirectories(
+          LoadDirectories(), emit); // Повторно загружаем список сотрудников
     } catch (e) {
       emit(DirectoryError(e.toString()));
     }

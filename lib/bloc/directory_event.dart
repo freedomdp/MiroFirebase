@@ -14,3 +14,8 @@ class EditDirectory extends DirectoryEvent {
 
   EditDirectory(this.documentId, this.newName);
 }
+class AddDirectory extends DirectoryEvent {
+  final String newName;
+
+  AddDirectory(this.newName);
+}

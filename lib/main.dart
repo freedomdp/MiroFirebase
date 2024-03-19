@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:miro/bloc/directory_bloc.dart';
 import 'package:miro/FireBase/firebase_config.dart';
 import 'package:miro/style/colors.dart';
 import 'package:miro/screens/home_page.dart';
@@ -26,10 +24,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: AppColors.primary),
         scaffoldBackgroundColor: AppColors.background,
       ),
-      home: BlocProvider<DirectoryBloc>(
-        create: (context) => DirectoryBloc(),
-        child: const HomePage(), // Используем HomePage напрямую
-      ),
+      home: HomePage(),
     );
   }
 }

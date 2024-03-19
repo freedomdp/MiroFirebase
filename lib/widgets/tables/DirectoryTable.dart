@@ -1,94 +1,41 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:miro/bloc/directory_bloc.dart';
 import 'package:miro/bloc/directory_event.dart';
-import 'package:miro/widgets/universal_modal.dart';
+import 'package:miro/bloc/directory_state.dart';
 import 'package:miro/style/text_styles.dart';
 
 class DirectoryTable extends StatelessWidget {
-  const DirectoryTable({super.key});
+  const DirectoryTable({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<QuerySnapshot>(
-      stream: FirebaseFirestore.instance.collection('directory').snapshots(),
-      builder: (context, snapshot) {
-        if (snapshot.hasError) {
-          return Text('Ошибка: ${snapshot.error}', style: TextStyles.textStyle);
-        }
+    // Запускаем загрузку данных при первой отрисовке виджета
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<DirectoryBloc>().add(LoadDirectories());
+    });
 
-        if (!snapshot.hasData) {
+    return BlocBuilder<DirectoryBloc, DirectoryState>(
+      builder: (context, state) {
+        if (state is DirectoryLoading) {
           return const Center(child: CircularProgressIndicator());
+        } else if (state is DirectoryLoaded) {
+          return ListView.builder(
+            itemCount: state.directories.length,
+            itemBuilder: (context, index) {
+              var doc = state.directories[index].data() as Map<String, dynamic>;
+              return ListTile(
+                title: Text(doc['Employee'] ?? 'Нет данных',
+                    style: TextStyles.textStyle),
+                // Добавьте здесь кнопки действий, если необходимо
+              );
+            },
+          );
+        } else if (state is DirectoryError) {
+          return Text('Ошибка: ${state.error}', style: TextStyles.textStyle);
         }
-
-        final directoryBloc = BlocProvider.of<DirectoryBloc>(context);
-
-        List<DataRow> rows =
-            snapshot.data!.docs.map((DocumentSnapshot document) {
-          Map<String, dynamic> data = document.data() as Map<String, dynamic>;
-
-          return DataRow(cells: [
-            DataCell(Text(data['Employee'] ?? 'Нет данных',
-                style: TextStyles.textStyle)),
-            DataCell(Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                IconButton(
-                  icon: const Icon(Icons.edit, color: Colors.blue),
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        // Использование BlocProvider.value для передачи DirectoryBloc в UniversalModal
-                        return BlocProvider.value(
-                          value: directoryBloc,
-                          child: UniversalModal(
-                            title: 'Редактирование имени сотрудника',
-                            employeeName:
-                                data['Employee'], // Текущее имя сотрудника
-                            documentId:
-                                document.id, // ID документа для обновления
-                            onSave: (String newName) {
-                              // Обновление записи через DirectoryBloc
-                              directoryBloc
-                                  .add(EditDirectory(document.id, newName));
-                            },
-                            content: TextFormField(
-                              initialValue: data['Employee'],
-                              decoration: const InputDecoration(
-                                labelText: 'Новое имя сотрудника',
-                              ),
-                            ),
-                          ),
-                        );
-                      },
-                    );
-                  },
-                ),
-                IconButton(
-                  icon: const Icon(Icons.delete, color: Colors.red),
-                  onPressed: () {
-                    // Удаление записи через DirectoryBloc
-                    directoryBloc.add(DeleteDirectory(document.id));
-                  },
-                ),
-              ],
-            )),
-          ]);
-        }).toList();
-
-        return SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: DataTable(
-            columns: const [
-              DataColumn(
-                  label: Text('Employee', style: TextStyles.tebleHeader)),
-              DataColumn(label: Text('Actions', style: TextStyles.tebleHeader)),
-            ],
-            rows: rows,
-          ),
-        );
+        return const SizedBox
+            .shrink(); // Пустой виджет для начального состояния
       },
     );
   }

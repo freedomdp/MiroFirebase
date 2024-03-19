@@ -3,13 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart'; // Для форматирования дат
 
 class AccountingTable extends StatefulWidget {
+  const AccountingTable({super.key});
+
   @override
   _AccountingTableState createState() => _AccountingTableState();
 }
 
 class _AccountingTableState extends State<AccountingTable> {
-  bool _sortAscending = true;
-  int _sortColumnIndex = 0;
+  final bool _sortAscending = true;
+  final int _sortColumnIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -17,8 +19,9 @@ class _AccountingTableState extends State<AccountingTable> {
       stream: FirebaseFirestore.instance.collection('accounting').snapshots(),
       builder: (context, snapshot) {
         if (snapshot.hasError) return Text('Ошибка: ${snapshot.error}');
-        if (!snapshot.hasData)
+        if (!snapshot.hasData) {
           return const Center(child: CircularProgressIndicator());
+        }
 
         List<DataRow> rows = [];
 

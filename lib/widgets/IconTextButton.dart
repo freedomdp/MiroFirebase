@@ -6,7 +6,8 @@ class IconTextButton extends StatelessWidget {
   final IconData icon;
   final String text;
   final VoidCallback onPressed;
-  final TextStyle? textStyle; // Стиль текста, который также определяет цвет иконки
+  final TextStyle?
+      textStyle; // Стиль текста, который также определяет цвет иконки
   final Color? backgroundColor; // Фоновый цвет кнопки
 
   const IconTextButton({
@@ -35,8 +36,9 @@ class IconTextButton extends StatelessWidget {
         style: effectiveTextStyle,
       ),
       style: ElevatedButton.styleFrom(
-        primary: backgroundColor ?? AppColors.primary, // Фон кнопки
-        onPrimary: effectiveTextStyle.color ?? AppColors.background, // Цвет текста и иконки
+        foregroundColor: effectiveTextStyle.color ?? AppColors.background,
+        backgroundColor:
+            backgroundColor ?? AppColors.primary, // Цвет текста и иконки
       ),
     );
   }

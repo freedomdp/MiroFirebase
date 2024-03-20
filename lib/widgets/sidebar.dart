@@ -8,7 +8,7 @@ class EmployeesSidebar extends StatefulWidget {
   EmployeesSidebar({Key? key}) : super(key: key);
 
   // firestore
-  final FirestoreService firestoreService = FirestoreService();
+  final EmployeesService firestoreService = EmployeesService();
 
   @override
   State<EmployeesSidebar> createState() => _EmployeesSidebarState();
@@ -18,7 +18,7 @@ class _EmployeesSidebarState extends State<EmployeesSidebar> {
   // text controller
   final TextEditingController textController = TextEditingController();
 
-  // open a dialog vox to add a note
+  // open a dialog vox to add a Employee
   void openEmployeesBox({String? docID}) {
     showDialog(
       context: context,
@@ -69,8 +69,8 @@ class _EmployeesSidebarState extends State<EmployeesSidebar> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Name', style: TextStyles.tebleHeader),
-                Text('Actions', style: TextStyles.tebleHeader),
+                Text('Name', style: TextStyles.tabHeader),
+                Text('Actions', style: TextStyles.tabHeader),
               ],
             ),
           ),
@@ -96,7 +96,7 @@ class _EmployeesSidebarState extends State<EmployeesSidebar> {
                         String noteText = data['Employee'];
                         // display as a list title
                         return ListTile(
-                          title: Text(noteText, style: TextStyles.tebleText),
+                          title: Text(noteText, style: TextStyles.tabText),
                           trailing: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
@@ -118,7 +118,10 @@ class _EmployeesSidebarState extends State<EmployeesSidebar> {
                       },
                     );
                   } else {
-                    return const Text("No notes ...");
+                    return const Text(
+                      "Employee list loading ...",
+                      style: TextStyles.h2Style,
+                    );
                   }
                 }),
           ),

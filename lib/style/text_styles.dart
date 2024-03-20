@@ -8,13 +8,13 @@ class TextStyles {
     color: AppColors.text,
   );
 
-  static const TextStyle tebleHeader = TextStyle(
+  static const TextStyle tabHeader = TextStyle(
     fontSize: 20.0,
     fontWeight: FontWeight.bold,
     color: AppColors.text,
   );
 
-  static const TextStyle tebleText = TextStyle(
+  static const TextStyle tabText = TextStyle(
     fontSize: 18.0,
     fontWeight: FontWeight.normal,
     color: AppColors.text,

@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class FirestoreService {
-  //get collection of notes
+class EmployeesService {
+  //get collection of employee
   final CollectionReference employees =
       FirebaseFirestore.instance.collection('directory');
   // CREATE: add a new note
@@ -28,5 +28,18 @@ class FirestoreService {
   // DELETE: delete notes given a doc id
   Future<void> deleteEmployee(String docID) {
     return employees.doc(docID).delete();
+  }
+}
+
+// FirestoreService for work with the accounting
+class AccountingService {
+  //get collection of accounting
+  final CollectionReference accounting =
+      FirebaseFirestore.instance.collection('accounting');
+  // READ: get accounting from database
+  Stream<QuerySnapshot> getAccountingStream() {
+    final accountingStream = accounting.orderBy('Date').snapshots();
+
+    return accountingStream;
   }
 }

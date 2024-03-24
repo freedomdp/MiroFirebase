@@ -25,6 +25,16 @@ class _AddOrderDialogState extends State<AddOrderDialog> {
   final TextEditingController _priceController = TextEditingController();
   final TextEditingController _cashController = TextEditingController();
   final TextEditingController _payDayController = TextEditingController();
+// validation
+  String? inputValidator(String? value,
+      {int minLength = 0, bool required = true}) {
+    if (required && (value == null || value.isEmpty)) {
+      return 'This field cannot be empty';
+    } else if (value != null && value.length < minLength) {
+      return 'Must be at least $minLength characters';
+    }
+    return null;
+  }
 
   @override
   void initState() {
@@ -45,8 +55,7 @@ class _AddOrderDialogState extends State<AddOrderDialog> {
               Padding(
                 padding: const EdgeInsets.only(bottom: 15),
                 child: EmployeeDropdown(
-                  selectedEmployee:
-                      _selectedEmployee, // Добавьте переменную _selectedEmployee в ваш State класс
+                  selectedEmployee: _selectedEmployee,
                   onChanged: (newValue) {
                     setState(() {
                       _selectedEmployee = newValue;
@@ -60,6 +69,8 @@ class _AddOrderDialogState extends State<AddOrderDialog> {
                   controller: _orderNumberController,
                   decoration: FormFieldStyles.inputDecoration(
                       label: "Order number", hint: "Enter order number"),
+                  validator: (value) =>
+                      inputValidator(value, minLength: 3, required: true),
                 ),
               ),
               Padding(
@@ -76,6 +87,8 @@ class _AddOrderDialogState extends State<AddOrderDialog> {
                   controller: _modelController,
                   decoration: FormFieldStyles.inputDecoration(
                       label: "Model", hint: "Enter model"),
+                  validator: (value) =>
+                      inputValidator(value, minLength: 3, required: true),
                 ),
               ),
               Padding(
@@ -84,9 +97,8 @@ class _AddOrderDialogState extends State<AddOrderDialog> {
                   controller: _companyController,
                   decoration: FormFieldStyles.inputDecoration(
                       label: "Company", hint: "Enter company"),
-                  inputFormatters: <TextInputFormatter>[
-                    FilteringTextInputFormatter.digitsOnly
-                  ],
+                  validator: (value) =>
+                      inputValidator(value, minLength: 3, required: true),
                 ),
               ),
               Padding(
@@ -100,6 +112,8 @@ class _AddOrderDialogState extends State<AddOrderDialog> {
                     FilteringTextInputFormatter
                         .digitsOnly // Ограничивает ввод только цифрами
                   ],
+                  validator: (value) =>
+                      inputValidator(value, minLength: 2, required: true),
                 ),
               ),
               Padding(

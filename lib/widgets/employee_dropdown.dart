@@ -31,11 +31,24 @@ class _EmployeeDropdownState extends State<EmployeeDropdown> {
         var employees = snapshot.data!.docs
             .map((doc) => doc['Employee'] as String)
             .toList();
+
+        // Проверяем, что список сотрудников не пуст
+        if (employees.isEmpty) {
+          // Возвращаем виджет, информирующий о том, что сотрудники не найдены
+          return Text('Сотрудники не найдены');
+        }
+
         return DropdownButtonFormField<String>(
           value: widget.selectedEmployee,
           onChanged: widget.onChanged,
           decoration: FormFieldStyles.inputDecoration(
               label: "Employee", hint: "Select an employee"),
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Please select an employee';
+            }
+            return null;
+          },
           items: employees.map<DropdownMenuItem<String>>((String value) {
             return DropdownMenuItem<String>(
               value: value,

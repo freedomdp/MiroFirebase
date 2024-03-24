@@ -23,10 +23,10 @@ class FormFieldStyles {
         borderSide: BorderSide(color: AppColors.primary, width: 2.0),
       ),
       errorBorder: const OutlineInputBorder(
-        borderSide: BorderSide(color: AppColors.validation_failed, width: 1.0),
+        borderSide: BorderSide(color: AppColors.validation_failed, width: 2.0),
       ),
       focusedErrorBorder: const OutlineInputBorder(
-        borderSide: BorderSide(color: AppColors.validation_failed, width: 2.0),
+        borderSide: BorderSide(color: AppColors.validation_failed, width: 5.0),
       ),
     );
   }

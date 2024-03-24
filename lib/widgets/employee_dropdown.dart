@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:miro/fireBase/firestore.dart';
+import 'package:miro/FireBase/firestore.dart';
 import 'package:miro/style/form_field_styles.dart';
 
 class EmployeeDropdown extends StatefulWidget {
@@ -34,7 +34,8 @@ class _EmployeeDropdownState extends State<EmployeeDropdown> {
         return DropdownButtonFormField<String>(
           value: widget.selectedEmployee,
           onChanged: widget.onChanged,
-          decoration: FormFieldStyles.inputDecoration(label: "Employee", hint: "Select an employee"),
+          decoration: FormFieldStyles.inputDecoration(
+              label: "Employee", hint: "Select an employee"),
           items: employees.map<DropdownMenuItem<String>>((String value) {
             return DropdownMenuItem<String>(
               value: value,

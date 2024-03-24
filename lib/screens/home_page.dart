@@ -79,8 +79,16 @@ class _HomePageState extends State<HomePage> {
                       ),
                       IconButton(
                         icon: const Icon(Icons.delete),
-                        onPressed: () {
-                          // Реализуйте логику для удаления записи
+                        onPressed: () async {
+                          // Здесь непосредственно вызываем метод удаления, передавая идентификатор документа
+                          await widget.firestoreService.deleteOrder(document
+                              .id); // Используйте правильный идентификатор документа
+
+                          // Показываем уведомление об успешном удалении
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                content: Text('Order successfully deleted')),
+                          );
                         },
                       ),
                     ],

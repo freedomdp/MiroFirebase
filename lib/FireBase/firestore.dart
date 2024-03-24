@@ -41,4 +41,36 @@ class AccountingService {
 
     return accountingStream;
   }
+
+  // ADD to accounting
+  Future<void> addOrder({
+    required String employee,
+    required String orderNumber,
+    required DateTime date,
+    required String model,
+    required String company,
+    required String price,
+    String? cash,
+    String? payDay,
+  }) {
+    //Проверяем, не пусты ли поля cash и payDay. Если пусты, присваиваем значение "0"
+    final cashValue = cash?.isNotEmpty == true ? cash : "0";
+    final payDayValue = payDay?.isNotEmpty == true ? payDay : "0";
+
+    return accounting.add({
+      'Employee': employee,
+      'Order': orderNumber,
+      'Date': Timestamp.fromDate(date), // Конвертируем DateTime в Timestamp
+      'Model': model,
+      'Company': company,
+      'Price': price,
+      'Cash': cashValue,
+      'PayDay': payDayValue,
+    });
+  }
+
+  // DELETE
+  Future<void> deleteOrder(String docId) {
+    return accounting.doc(docId).delete();
+  }
 }

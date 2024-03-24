@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:miro/FireBase/firestore.dart';
 import 'package:miro/style/colors.dart';
 import 'package:miro/style/text_styles.dart';
 import 'package:miro/style/form_field_styles.dart';
@@ -152,23 +153,39 @@ class _AddOrderDialogState extends State<AddOrderDialog> {
           ),
           child: const Text('Cancel', style: TextStyles.button_cancel),
         ),
-        TextButton(
-          onPressed: () {
-            if (_formKey.currentState!.validate()) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Form is valid!')),
-              );
-            }
-          },
-          style: TextButton.styleFrom(
-            minimumSize: const Size(100, 50), // Минимальный размер кнопки
-          ),
-          child: const Text('Validate', style: TextStyles.button_validate),
-        ),
+        // TextButton(
+        //   onPressed: () {
+        //     if (_formKey.currentState!.validate()) {
+        //       ScaffoldMessenger.of(context).showSnackBar(
+        //         const SnackBar(content: Text('Form is valid!')),
+        //       );
+        //     }
+        //   },
+        //   style: TextButton.styleFrom(
+        //     minimumSize: const Size(100, 50), // Минимальный размер кнопки
+        //   ),
+        //   child: const Text('Validate', style: TextStyles.button_validate),
+        // ),
         ElevatedButton(
-          onPressed: () {
+          onPressed: () async {
             if (_formKey.currentState!.validate()) {
-              // Логика для добавления заказа в Firestore
+              AccountingService accountingService = AccountingService();
+
+              // Передаем DateTime напрямую, метод addOrder сам конвертирует его в Timestamp
+              await accountingService.addOrder(
+                employee: _selectedEmployee!,
+                orderNumber: _orderNumberController.text,
+                date: DateFormat('dd.MM.yyyy').parse(_dateController.text),
+                model: _modelController.text,
+                company: _companyController.text,
+                price: _priceController.text,
+                cash: _cashController.text,
+                payDay: _payDayController.text,
+              );
+
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Order successfully added')),
+              );
               Navigator.of(context).pop();
             } else {
               ScaffoldMessenger.of(context).showSnackBar(

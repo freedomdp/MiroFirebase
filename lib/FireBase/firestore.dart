@@ -11,21 +11,20 @@ class EmployeesService {
     });
   }
 
-  // READ: get notes from database
+  // READ: get Employees from database
   Stream<QuerySnapshot> getEmployeesStream() {
     final employeesStream = employees.orderBy('Employee').snapshots();
-
     return employeesStream;
   }
 
-  // UPDATE: update notes given a doc id
+  // UPDATE: update Employee given a doc id
   Future<void> updateEmployee(String docID, String newEmployee) {
     return employees.doc(docID).update({
       'Employee': newEmployee,
     });
   }
 
-  // DELETE: delete notes given a doc id
+  // DELETE: delete Employee given a doc id
   Future<void> deleteEmployee(String docID) {
     return employees.doc(docID).delete();
   }

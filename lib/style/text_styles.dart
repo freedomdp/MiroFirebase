@@ -29,4 +29,20 @@ class TextStyles {
     fontSize: 20.0,
     fontWeight: FontWeight.bold,
   );
+
+  static const TextStyle button_prymary = TextStyle(
+    fontSize: 20.0,
+    fontWeight: FontWeight.bold,
+    color: AppColors.add,
+  );
+  static const TextStyle button_validate = TextStyle(
+    fontSize: 19.0,
+    fontWeight: FontWeight.w100,
+    color: AppColors.text_secondary,
+  );
+  static const TextStyle button_cancel = TextStyle(
+    fontSize: 19.0,
+    fontWeight: FontWeight.w100,
+    color: AppColors.text_secondary,
+  );
 }

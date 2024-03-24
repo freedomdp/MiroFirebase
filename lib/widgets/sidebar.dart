@@ -19,35 +19,46 @@ class _EmployeesSidebarState extends State<EmployeesSidebar> {
   final TextEditingController textController = TextEditingController();
 
   // open a dialog vox to add a Employee
-  void openEmployeesBox({String? docID}) {
+  void openEmployeesBox({
+    String? docID,
+    String label = "Employee Name",
+    String buttonText = "Save",
+    String initialValue = "",
+  }) {
+    textController.text =
+        initialValue; // Установка начального значения для поля ввода
+
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-          content: TextField(
-            controller: textController,
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(label,
+                style: const TextStyle(
+                    fontWeight: FontWeight.bold)), // Отображение лейбла
+            TextField(
+              controller: textController,
+            ),
+          ],
+        ),
+        actions: [
+          ElevatedButton(
+            onPressed: () {
+              if (docID == null) {
+                widget.firestoreService.addEmployee(textController.text);
+              } else {
+                widget.firestoreService
+                    .updateEmployee(docID, textController.text);
+              }
+              textController.clear();
+              Navigator.pop(context);
+            },
+            child: Text(buttonText), // Установка текста кнопки
           ),
-          actions: [
-            // button to save
-            ElevatedButton(
-                onPressed: () {
-                  // add a new employee
-                  if (docID == null) {
-                    widget.firestoreService.addEmployee(textController.text);
-                  }
-                  // update an existing employee
-                  else {
-                    widget.firestoreService
-                        .updateEmployee(docID, textController.text);
-                  }
-
-                  // clear the text controller
-                  textController.clear();
-
-                  // close the box
-                  Navigator.pop(context);
-                },
-                child: const Text('Add'))
-          ]),
+        ],
+      ),
     );
   }
 
@@ -102,7 +113,13 @@ class _EmployeesSidebarState extends State<EmployeesSidebar> {
                             children: [
                               // update button
                               IconButton(
-                                onPressed: () => openEmployeesBox(docID: docID),
+                                onPressed: () => openEmployeesBox(
+                                  docID: document.id,
+                                  label: "Edit employee name",
+                                  buttonText: "Update",
+                                  initialValue: data[
+                                      'Employee'], // Используем значение из текущего документа
+                                ),
                                 icon: const Icon(Icons.edit),
                               ),
 
@@ -128,19 +145,26 @@ class _EmployeesSidebarState extends State<EmployeesSidebar> {
           Padding(
             padding:
                 const EdgeInsets.symmetric(vertical: 16.0, horizontal: 8.0),
-            child: Align(
-              alignment: Alignment.center,
-              child: Ink(
-                decoration: BoxDecoration(
-                  color: AppColors.primary, // Цвет фона кнопки
-                  borderRadius:
-                      BorderRadius.circular(100), // Делаем круглую форму
+            child: ElevatedButton.icon(
+              onPressed: () => openEmployeesBox(
+                label: "Enter new employee name",
+                buttonText: "Add",
+              ),
+              icon: const Icon(Icons.add,
+                  color: AppColors.background), // Иконка кнопки
+              label: const Text("Add employee",
+                  style:
+                      TextStyle(color: AppColors.background)), // Текст кнопки
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.primary, // Фон кнопки
+                foregroundColor:
+                    AppColors.background, // Цвет текста и иконки при нажатии
+                shape: RoundedRectangleBorder(
+                  // Скругление углов
+                  borderRadius: BorderRadius.circular(8),
                 ),
-                child: IconButton(
-                  icon: const Icon(Icons.add),
-                  color: AppColors.background, // Цвет иконки
-                  onPressed: () => openEmployeesBox(), // Действие при нажатии
-                ),
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 12, vertical: 8), // Внутренние отступы
               ),
             ),
           ),

@@ -7,4 +7,6 @@ class AppColors {
   static const border = Color(0xFF000000);
   static const text = Color(0xFF000000);
   static const add = Color(0xFF018786);
+  static const text_secondary = Color(0xFF808080);
+  static const validation_failed = Color(0xFFEE204D);
 }

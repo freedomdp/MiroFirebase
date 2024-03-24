@@ -4,6 +4,7 @@ import 'package:miro/style/text_styles.dart'; // Убедитесь, что в �
 import 'package:miro/widgets/sidebar.dart';
 import 'package:miro/FireBase/firestore.dart';
 import 'package:intl/intl.dart';
+import 'package:miro/widgets/add_order_dialog.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({super.key});
@@ -24,7 +25,10 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: const Text('Smart Ship Cars'),
+        title: const Text(
+          'Smart Ship Cars',
+          style: TextStyles.h1Style,
+        ),
         leading: IconButton(
           icon: const Icon(Icons.person),
           onPressed: () => _scaffoldKey.currentState?.openDrawer(),
@@ -119,8 +123,10 @@ class _HomePageState extends State<HomePage> {
       // Добавление плавающей кнопки с иконкой и надписью
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          // Здесь должен быть код для добавления нового заказа
-          // Например, открытие диалогового окна или новой страницы
+          showDialog(
+            context: context,
+            builder: (context) => const AddOrderDialog(),
+          );
         },
         icon: const Icon(Icons.add),
         label: const Text("Add new order"),

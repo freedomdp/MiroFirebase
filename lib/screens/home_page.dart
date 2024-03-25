@@ -87,17 +87,20 @@ class _HomePageState extends State<HomePage> {
                       style: TextStyles.tabText)),
                   DataCell(
                       Text(data['Cash'].toString(), style: TextStyles.tabText)),
-                  DataCell(Text(data['Pay Day'] ?? 'N/A',
+                  DataCell(Text(
+                      data['PayDay'] != null && data['PayDay'] != "0"
+                          ? data['PayDay'].toString()
+                          : "0",
                       style: TextStyles.tabText)),
                   DataCell(Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      IconButton(
-                        icon: const Icon(Icons.edit),
-                        onPressed: () {
-                          // Реализуйте логику для редактирования записи
-                        },
-                      ),
+                      // IconButton(
+                      //   icon: const Icon(Icons.edit),
+                      //   onPressed: () {
+                      //     // Реализуйте логику для редактирования записи
+                      //   },
+                      // ),
                       IconButton(
                         icon: const Icon(Icons.delete),
                         onPressed: () async {

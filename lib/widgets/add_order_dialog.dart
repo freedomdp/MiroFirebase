@@ -48,6 +48,7 @@ class _AddOrderDialogState extends State<AddOrderDialog> {
   Widget build(BuildContext context) {
     return AlertDialog(
       title: const Text('Add New Order'),
+      backgroundColor: AppColors.background,
       content: Form(
         key: _formKey,
         child: SingleChildScrollView(
@@ -153,19 +154,6 @@ class _AddOrderDialogState extends State<AddOrderDialog> {
           ),
           child: const Text('Cancel', style: TextStyles.button_cancel),
         ),
-        // TextButton(
-        //   onPressed: () {
-        //     if (_formKey.currentState!.validate()) {
-        //       ScaffoldMessenger.of(context).showSnackBar(
-        //         const SnackBar(content: Text('Form is valid!')),
-        //       );
-        //     }
-        //   },
-        //   style: TextButton.styleFrom(
-        //     minimumSize: const Size(100, 50), // Минимальный размер кнопки
-        //   ),
-        //   child: const Text('Validate', style: TextStyles.button_validate),
-        // ),
         ElevatedButton(
           onPressed: () async {
             if (_formKey.currentState!.validate()) {

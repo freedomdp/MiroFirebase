@@ -17,6 +17,7 @@ class EmployeesSidebar extends StatefulWidget {
 class _EmployeesSidebarState extends State<EmployeesSidebar> {
   // text controller
   final TextEditingController textController = TextEditingController();
+  final double sidebarWidth = 400; // Установленная ширина sidebar
 
   // open a dialog vox to add a Employee
   void openEmployeesBox({
@@ -64,111 +65,121 @@ class _EmployeesSidebarState extends State<EmployeesSidebar> {
 
   @override
   Widget build(BuildContext context) {
-    return Drawer(
-      child: Column(
-        children: <Widget>[
-          Container(
-            padding: const EdgeInsets.all(16.0),
-            alignment: Alignment.centerLeft,
-            child: const Text(
-              'Employees',
-              style: TextStyles.h1Style,
+    return SizedBox(
+      width: sidebarWidth,
+      child: Drawer(
+        child: Column(
+          children: <Widget>[
+            Container(
+              padding: const EdgeInsets.all(16.0),
+              alignment: Alignment.centerLeft,
+              child: const Text(
+                'Employees',
+                style: TextStyles.h1Style,
+              ),
             ),
-          ),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Name', style: TextStyles.tabHeader),
-                Text('Actions', style: TextStyles.tabHeader),
-              ],
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Name', style: TextStyles.tabHeader),
+                  Padding(
+                    padding: EdgeInsets.only(right: 35),
+                    child: Text('Actions', style: TextStyles.tabHeader),
+                  ),
+                ],
+              ),
             ),
-          ),
-          Expanded(
-            child: StreamBuilder<QuerySnapshot>(
-                stream: widget.firestoreService.getEmployeesStream(),
-                builder: (context, snapshot) {
-                  // if we have data, get all the docs
-                  if (snapshot.hasData) {
-                    List notesList = snapshot.data!.docs;
+            Expanded(
+              child: StreamBuilder<QuerySnapshot>(
+                  stream: widget.firestoreService.getEmployeesStream(),
+                  builder: (context, snapshot) {
+                    // if we have data, get all the docs
+                    if (snapshot.hasData) {
+                      List notesList = snapshot.data!.docs;
 
-                    // display as a list
-                    return ListView.builder(
-                      itemCount: notesList.length,
-                      itemBuilder: (context, index) {
-                        // get aech individual doc
-                        DocumentSnapshot document = notesList[index];
-                        String docID = document.id;
+                      // display as a list
+                      return ListView.builder(
+                        itemCount: notesList.length,
+                        itemBuilder: (context, index) {
+                          // get aech individual doc
+                          DocumentSnapshot document = notesList[index];
+                          String docID = document.id;
 
-                        // get note from each doc
-                        Map<String, dynamic> data =
-                            document.data() as Map<String, dynamic>;
-                        String noteText = data['Employee'];
-                        // display as a list title
-                        return ListTile(
-                          title: Text(noteText, style: TextStyles.tabText),
-                          trailing: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              // update button
-                              IconButton(
-                                onPressed: () => openEmployeesBox(
-                                  docID: document.id,
-                                  label: "Edit employee name",
-                                  buttonText: "Update",
-                                  initialValue: data[
-                                      'Employee'], // Используем значение из текущего документа
+                          // get note from each doc
+                          Map<String, dynamic> data =
+                              document.data() as Map<String, dynamic>;
+                          String noteText = data['Employee'];
+                          // display as a list title
+                          return ListTile(
+                            title: Text(noteText, style: TextStyles.tabText),
+                            trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                // statsctic
+                                IconButton(
+                                  onPressed: () {},
+                                  icon: const Icon(Icons.insert_chart),
                                 ),
-                                icon: const Icon(Icons.edit),
-                              ),
-
-                              // delete button
-                              IconButton(
-                                onPressed: () => widget.firestoreService
-                                    .deleteEmployee(docID),
-                                icon: const Icon(Icons.delete),
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                    );
-                  } else {
-                    return const Text(
-                      "Employee list loading ...",
-                      style: TextStyles.h2Style,
-                    );
-                  }
-                }),
-          ),
-          Padding(
-            padding:
-                const EdgeInsets.symmetric(vertical: 16.0, horizontal: 8.0),
-            child: ElevatedButton.icon(
-              onPressed: () => openEmployeesBox(
-                label: "Enter new employee name",
-                buttonText: "Add",
-              ),
-              icon: const Icon(Icons.add,
-                  color: AppColors.background), // Иконка кнопки
-              label: const Text("Add employee",
-                  style:
-                      TextStyle(color: AppColors.background)), // Текст кнопки
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.primary, // Фон кнопки
-                foregroundColor:
-                    AppColors.background, // Цвет текста и иконки при нажатии
-                shape: RoundedRectangleBorder(
-                  // Скругление углов
-                  borderRadius: BorderRadius.circular(8),
+                                // update button
+                                IconButton(
+                                  onPressed: () => openEmployeesBox(
+                                    docID: document.id,
+                                    label: "Edit employee name",
+                                    buttonText: "Update",
+                                    initialValue: data[
+                                        'Employee'], // Используем значение из текущего документа
+                                  ),
+                                  icon: const Icon(Icons.edit),
+                                ),
+                                // delete button
+                                IconButton(
+                                  onPressed: () => widget.firestoreService
+                                      .deleteEmployee(docID),
+                                  icon: const Icon(Icons.delete),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      );
+                    } else {
+                      return const Text(
+                        "Employee list loading ...",
+                        style: TextStyles.h2Style,
+                      );
+                    }
+                  }),
+            ),
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(vertical: 16.0, horizontal: 8.0),
+              child: ElevatedButton.icon(
+                onPressed: () => openEmployeesBox(
+                  label: "Enter new employee name",
+                  buttonText: "Add",
                 ),
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 12, vertical: 8), // Внутренние отступы
+                icon: const Icon(Icons.add,
+                    color: AppColors.background), // Иконка кнопки
+                label: const Text("Add employee",
+                    style:
+                        TextStyle(color: AppColors.background)), // Текст кнопки
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.primary, // Фон кнопки
+                  foregroundColor:
+                      AppColors.background, // Цвет текста и иконки при нажатии
+                  shape: RoundedRectangleBorder(
+                    // Скругление углов
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 12, vertical: 8), // Внутренние отступы
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

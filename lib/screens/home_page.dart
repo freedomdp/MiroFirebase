@@ -94,13 +94,8 @@ class _HomePageState extends State<HomePage> {
                       style: TextStyles.tabText)),
                   DataCell(Row(
                     mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      // IconButton(
-                      //   icon: const Icon(Icons.edit),
-                      //   onPressed: () {
-                      //     // Реализуйте логику для редактирования записи
-                      //   },
-                      // ),
                       IconButton(
                         icon: const Icon(Icons.delete),
                         onPressed: () async {

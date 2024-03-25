@@ -37,8 +37,9 @@ class AccountingService {
       FirebaseFirestore.instance.collection('accounting');
   // READ: get accounting from database
   Stream<QuerySnapshot> getAccountingStream() {
-    final accountingStream = accounting.orderBy('Date').snapshots();
-
+    // Изменяем сортировку на обратную, чтобы самые новые заказы были вверху
+    final accountingStream =
+        accounting.orderBy('Date', descending: true).snapshots();
     return accountingStream;
   }
 

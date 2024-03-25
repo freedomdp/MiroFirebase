@@ -17,6 +17,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final double columnWidth = 130; //column width
 
   @override
   Widget build(BuildContext context) {
@@ -54,14 +55,34 @@ class _HomePageState extends State<HomePage> {
                     ? formatter.format((data['Date'] as Timestamp).toDate())
                     : 'N/A';
 
-                return DataRow(cells: [
-                  DataCell(Text(data['Order'].toString(),
-                      style: TextStyles.tabText)),
-                  DataCell(Text(dateString, style: TextStyles.tabText)),
-                  DataCell(Text(data['Employee'], style: TextStyles.tabText)),
-                  DataCell(Text(data['Model'], style: TextStyles.tabText)),
-                  DataCell(Text(data['Company'] ?? 'N/A',
-                      style: TextStyles.tabText)),
+                return DataRow(cells: <DataCell>[
+                  DataCell(ConstrainedBox(
+                    constraints: BoxConstraints(maxWidth: columnWidth),
+                    child: Wrap(children: [
+                      Text(data['Order'].toString(), style: TextStyles.tabText),
+                    ]),
+                  )),
+                  DataCell(ConstrainedBox(
+                      constraints: BoxConstraints(maxWidth: columnWidth),
+                      child: Wrap(children: [
+                        Text(dateString, style: TextStyles.tabText)
+                      ]))),
+                  DataCell(ConstrainedBox(
+                      constraints: BoxConstraints(maxWidth: columnWidth),
+                      child: Wrap(children: [
+                        Text(data['Employee'], style: TextStyles.tabText)
+                      ]))),
+                  DataCell(ConstrainedBox(
+                      constraints: BoxConstraints(maxWidth: columnWidth),
+                      child: Wrap(children: [
+                        Text(data['Model'], style: TextStyles.tabText)
+                      ]))),
+                  DataCell(ConstrainedBox(
+                    constraints: BoxConstraints(maxWidth: columnWidth),
+                    child: Wrap(children: [
+                      Text(data['Company'] ?? 'N/A', style: TextStyles.tabText),
+                    ]),
+                  )),
                   DataCell(Text(data['Price'].toString(),
                       style: TextStyles.tabText)),
                   DataCell(
@@ -99,27 +120,52 @@ class _HomePageState extends State<HomePage> {
               return SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: DataTable(
-                  columns: const [
+                  columns: <DataColumn>[
                     DataColumn(
-                        label: Text('Order', style: TextStyles.tabHeader)),
+                        label: ConstrainedBox(
+                            constraints: BoxConstraints(maxWidth: columnWidth),
+                            child: const Text('Order',
+                                style: TextStyles.tabHeader))),
                     DataColumn(
-                        label: Text('Date', style: TextStyles.tabHeader)),
+                        label: ConstrainedBox(
+                            constraints: BoxConstraints(maxWidth: columnWidth),
+                            child: const Text('Date',
+                                style: TextStyles.tabHeader))),
                     DataColumn(
-                        label: Text('Employee', style: TextStyles.tabHeader)),
+                        label: ConstrainedBox(
+                            constraints: BoxConstraints(maxWidth: columnWidth),
+                            child: const Text('Employee',
+                                style: TextStyles.tabHeader))),
                     DataColumn(
-                        label: Text('Model', style: TextStyles.tabHeader)),
+                        label: ConstrainedBox(
+                            constraints: BoxConstraints(maxWidth: columnWidth),
+                            child: const Text('Model',
+                                style: TextStyles.tabHeader))),
                     DataColumn(
-                        label: Text('Company', style: TextStyles.tabHeader)),
+                        label: ConstrainedBox(
+                            constraints: BoxConstraints(maxWidth: columnWidth),
+                            child: const Text('Company',
+                                style: TextStyles.tabHeader))),
                     DataColumn(
-                        label: Text('Price', style: TextStyles.tabHeader)),
+                        label: ConstrainedBox(
+                            constraints: BoxConstraints(maxWidth: columnWidth),
+                            child: const Text('Price',
+                                style: TextStyles.tabHeader))),
                     DataColumn(
-                        label: Text('Cash', style: TextStyles.tabHeader)),
+                        label: ConstrainedBox(
+                            constraints: BoxConstraints(maxWidth: columnWidth),
+                            child: const Text('Cash',
+                                style: TextStyles.tabHeader))),
                     DataColumn(
-                        label: Text('Pay Day', style: TextStyles.tabHeader)),
+                        label: ConstrainedBox(
+                            constraints: BoxConstraints(maxWidth: columnWidth),
+                            child: const Text('Pay Day',
+                                style: TextStyles.tabHeader))),
                     DataColumn(
-                        label: Text('Actions',
-                            style: TextStyles
-                                .tabHeader)), // Добавлена колонка Actions
+                        label: ConstrainedBox(
+                      constraints: BoxConstraints(maxWidth: columnWidth),
+                      child: const Text('Actions', style: TextStyles.tabHeader),
+                    )), // Добавлена колонка Actions
                   ],
                   rows: rows,
                 ),
